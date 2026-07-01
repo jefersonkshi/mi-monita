@@ -1,164 +1,61 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feliz Cumpleaños, Mi Monita 💙</title>
+<script>
+// Ajuste directo del contador de tiempo
+const fechaInicio = new Date("2023-11-01T00:00:00");
 
-    <!-- Favicon Emoji -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💙</text></svg>">
+function actualizarContador() {
+    const ahora = new Date();
+    const diferencia = ahora - fechaInicio;
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&family=Great+Vibes&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    // Buscamos el cuadro donde dice "Calculando el tiempo..."
+    const elementos = document.getElementsByTagName("p");
+    let elementoContador = null;
 
-    <!-- Stylesheet -->
-    <link rel="stylesheet" href="style.css">
+    for (let el of elementos) {
+        if (el.textContent.includes("Calculando el tiempo...") || el.textContent.includes("días")) {
+            elementoContador = el;
+            break;
+        }
+    }
 
-    <!-- Canvas Confetti Library -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-</head>
-<body>
+    if (!elementoContador) {
+        // Si no lo encuentra por texto, busca el contenedor del contador directamente
+        const botonContador = document.querySelector('.container, .content, body');
+        if (botonContador && !document.getElementById("contador-vivo")) {
+            // Un respaldo por si acaso
+        }
+        return;
+    }
 
-    <!-- Stars container -->
-    <div id="stars"></div>
+    const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+    const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+    const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
 
-    <!-- Music Player Indicator (Top Corner) -->
-    <div id="music-indicator" class="music-indicator hidden" onclick="toggleMusica()">
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <span class="music-text">Música</span>
-    </div>
+    elementoContador.innerHTML = `<strong>${dias}</strong> días, <strong>${horas}</strong> horas, <strong>${minutos}</strong> minutos y <strong>${segundos}</strong> segundos`;
+}
 
-    <!-- Hero / Start Section -->
-    <section class="inicio">
-        <div class="decoracion-inicio">
-            <span class="emoji-decorativo float-1">🎈</span>
-            <span class="emoji-decorativo float-2">✨</span>
-            <span class="emoji-decorativo float-3">🌸</span>
-        </div>
-        <h1>💙 Feliz Cumpleaños 💙</h1>
-        <h2>Mi Monita</h2>
-        <p>
-            Hoy preparé un pequeño regalo para ti...
-        </p>
-        <button id="btn-regalo" onclick="abrirCarta()">
-            Abrir mi regalo 💌
-        </button>
-    </section>
+setInterval(actualizarContador, 1000);
+actualizarContador();
 
-    <!-- Interactive Letter Section -->
-    <section id="carta" class="oculto">
-        <div class="sobre">
-            <div class="contenido">
-                <h2>Para Chris 💙</h2>
-                <p>
-                    Hoy celebro el regalo más hermoso que la vida me dio:
-                    <b>tú.</b>
-                </p>
-                <p>
-                    Gracias por llenar mis días de felicidad,
-                    por cada sonrisa,
-                    por cada conversación,
-                    y por cada momento bonito que hemos compartido.
-                </p>
-                <p>
-                    Desde aquel
-                    <b>1 de noviembre</b>
-                    cuando comenzamos a hablar,
-                    mi vida ha tenido alguien muy especial.
-                </p>
-                <p>
-                    Hoy quiero desearte un cumpleaños lleno de amor,
-                    alegría,
-                    salud
-                    y sueños cumplidos.
-                </p>
-                <p>
-                    Nunca dejes de sonreír,
-                    porque tu sonrisa ilumina muchísimo.
-                </p>
-                <p>
-                    Te quiero muchísimo,
-                    <b>mi monita.</b>
-                    💙
-                </p>
-                <h3>
-                    Con cariño...
-                    <br>
-                    Jeferson
-                </h3>
-            </div>
-        </div>
-    </section>
-
-    <!-- Relationship Counter Section -->
-    <section class="contador">
-        <h2>
-            ⏳ Tiempo desde que empezamos a hablar
-        </h2>
-        <div id="contador">
-            <div class="tiempo-cargando">Calculando el tiempo...</div>
-        </div>
-    </section>
-
-    <!-- Polaroid Photo Gallery Section -->
-    <section class="galeria">
-        <h2>
-            Nuestros Momentos 📸
-        </h2>
-        <div class="imagenes">
-            <div class="polaroid-card">
-                <img src="img/foto1.jpg" alt="Momento 1" onerror="handleImageError(this, 1)">
-                <div class="caption">Nuestra sonrisa ✨</div>
-            </div>
-            <div class="polaroid-card">
-                <img src="img/foto2.jpg" alt="Momento 2" onerror="handleImageError(this, 2)">
-                <div class="caption">Instante mágico 💙</div>
-            </div>
-            <div class="polaroid-card">
-                <img src="img/foto3.jpg" alt="Momento 3" onerror="handleImageError(this, 3)">
-                <div class="caption">Risillas tiernas 🌸</div>
-            </div>
-            <div class="polaroid-card">
-                <img src="img/foto4.jpg" alt="Momento 4" onerror="handleImageError(this, 4)">
-                <div class="caption">Complicidad pura 💫</div>
-            </div>
-            <div class="polaroid-card">
-                <img src="img/foto5.jpg" alt="Momento 5" onerror="handleImageError(this, 5)">
-                <div class="caption">Siempre juntos 👩‍❤️‍👨</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Final Surprise Section -->
-    <section class="sorpresa">
-        <button id="btn-sorpresa" onclick="sorpresa()">
-            🎁 Ábreme
-        </button>
-        <div id="mensajeFinal">
-            <h2>💙</h2>
-            <p>
-                Gracias por llegar a mi vida.
-                <br>
-                Espero seguir creando muchos recuerdos contigo.
-                <br>
-                Feliz cumpleaños, mi monita.
-                <br>
-                💙
-            </p>
-        </div>
-    </section>
-
-    <!-- Audio Element -->
-    <audio id="musica" loop>
-        <source src="music/cancion.mp3" type="audio/mpeg">
-    </audio>
-
-    <!-- Script File -->
-    <script src="script.js"></script>
-</body>
-</html>
+// Función del botón corregida en inglés nativo para el celular
+function sorpresa() {
+    const mensaje = document.getElementById("mensajeFinal");
+    const audio = document.getElementById("musica");
+    
+    // Si hay música, intenta reproducirla sin colgar el botón
+    if (audio) {
+        audio.play().catch(function(e) { 
+            console.log("El navegador del celular bloqueó el auto-play de música."); 
+        });
+    }
+    
+    // Muestra el mensaje del regalo al instante
+    if (mensaje) {
+        mensaje.style.display = "block";
+        mensaje.style.visibility = "visible";
+        mensaje.scrollIntoView({ behavior: 'smooth' });
+    } else {
+        alert("¡Feliz cumpleaños, mi monita! 💙");
+    }
+}
+</script>
