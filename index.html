@@ -1,61 +1,91 @@
-<script>
-// Ajuste directo del contador de tiempo
-const fechaInicio = new Date("2023-11-01T00:00:00");
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feliz Cumpleaños, Mi Monita 💙</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-function actualizarContador() {
-    const ahora = new Date();
-    const diferencia = ahora - fechaInicio;
+    <div class="container">
+        <audio id="musica" loop>
+            <source src="music/cancion.mp3" type="audio/mpeg">
+        </audio>
 
-    // Buscamos el cuadro donde dice "Calculando el tiempo..."
-    const elementos = document.getElementsByTagName("p");
-    let elementoContador = null;
+        <h1>Feliz Cumpleaños 💙</h1>
+        <h2>Mi Monita</h2>
+        <p class="introduccion">Hoy preparé un pequeño regalo para ti...</p>
 
-    for (let el of elementos) {
-        if (el.textContent.includes("Calculando el tiempo...") || el.textContent.includes("días")) {
-            elementoContador = el;
-            break;
+        <section class="sorpresa">
+            <button id="btn-sorpresa" onclick="sorpresa()">
+                🎁 Abrir mi regalo
+            </button>
+            
+            <div id="mensajeFinal" style="display: none; margin-top: 30px;">
+                <h2>Para Chris 💙</h2>
+                <p>Hoy celebro el regalo más hermoso que la vida me dio: tú.</p>
+                <p>Gracias por llenar mis días de felicidad, por cada sonrisa, por cada conversación, y por cada momento bonito que hemos compartido.</p>
+                <p>Desde aquel <strong>1 de noviembre</strong> cuando comenzamos a hablar, mi vida ha tenido alguien muy especial.</p>
+                <p>Hoy quiero desearte un cumpleaños lleno de amor, alegría, salud y sueños cumplidos.</p>
+                <p>Nunca dejes de sonreír, porque tu sonrisa ilumina muchísimo.</p>
+                <p>Te quiero muchísimo, mi monita. 💙</p>
+                <p class="firma">Con cariño...<br><strong>Jeferson</strong></p>
+            </div>
+        </section>
+
+        <div class="contador-box" style="margin-top: 40px;">
+            <h3>⏳ Tiempo desde que empezamos a hablar</h3>
+            <p id="contador-texto" style="font-weight: bold; font-size: 1.2rem;">Calculando el tiempo...</p>
+        </div>
+    </div>
+
+    <script>
+    // 1. Configuración de la fecha (Año, Mes-1, Día). Noviembre es el mes 10 en JavaScript
+    const fechaInicio = new Date(2023, 10, 1, 0, 0, 0);
+
+    function actualizarContador() {
+        const ahora = new Date();
+        const diferencia = ahora - fechaInicio;
+        const elementoContador = document.getElementById("contador-texto");
+
+        if (!elementoContador) return;
+
+        if (diferencia < 0) {
+            elementoContador.innerHTML = "¡Llegó el día especial! 💙";
+            return;
+        }
+
+        const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+        const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+        const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+
+        elementoContador.innerHTML = `<strong>${dias}</strong> días, <strong>${horas}</strong> horas, <strong>${minutos}</strong> minutos y <strong>${segundos}</strong> segundos`;
+    }
+
+    // Ejecutar el contador en tiempo real
+    setInterval(actualizarContador, 1000);
+    actualizarContador();
+
+    // Función del botón
+    function sorpresa() {
+        const mensaje = document.getElementById("mensajeFinal");
+        const audio = document.getElementById("musica");
+        const boton = document.getElementById("btn-sorpresa");
+        
+        // Intentar reproducir música de fondo sin trabar la web
+        if (audio) {
+            audio.play().catch(e => console.log("El navegador bloqueó el audio inicial"));
+        }
+        
+        // Mostrar la carta con suavidad
+        if (mensaje) {
+            mensaje.style.display = "block";
+            if (boton) boton.style.display = "none"; // Oculta el botón tras abrirlo
+            mensaje.scrollIntoView({ behavior: 'smooth' });
         }
     }
-
-    if (!elementoContador) {
-        // Si no lo encuentra por texto, busca el contenedor del contador directamente
-        const botonContador = document.querySelector('.container, .content, body');
-        if (botonContador && !document.getElementById("contador-vivo")) {
-            // Un respaldo por si acaso
-        }
-        return;
-    }
-
-    const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
-    const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
-    const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
-
-    elementoContador.innerHTML = `<strong>${dias}</strong> días, <strong>${horas}</strong> horas, <strong>${minutos}</strong> minutos y <strong>${segundos}</strong> segundos`;
-}
-
-setInterval(actualizarContador, 1000);
-actualizarContador();
-
-// Función del botón corregida en inglés nativo para el celular
-function sorpresa() {
-    const mensaje = document.getElementById("mensajeFinal");
-    const audio = document.getElementById("musica");
-    
-    // Si hay música, intenta reproducirla sin colgar el botón
-    if (audio) {
-        audio.play().catch(function(e) { 
-            console.log("El navegador del celular bloqueó el auto-play de música."); 
-        });
-    }
-    
-    // Muestra el mensaje del regalo al instante
-    if (mensaje) {
-        mensaje.style.display = "block";
-        mensaje.style.visibility = "visible";
-        mensaje.scrollIntoView({ behavior: 'smooth' });
-    } else {
-        alert("¡Feliz cumpleaños, mi monita! 💙");
-    }
-}
-</script>
+    </script>
+</body>
+</html>
