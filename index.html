@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <div class="container">
         <audio id="musica" loop>
             <source src="music/cancion.mp3" type="audio/mpeg">
@@ -15,77 +14,34 @@
 
         <h1>Feliz Cumpleaños 💙</h1>
         <h2>Mi Monita</h2>
-        <p class="introduccion">Hoy preparé un pequeño regalo para ti...</p>
+        <p>Hoy preparé un pequeño regalo para ti...</p>
+        
+        <button onclick="sorpresa()">Abrir mi regalo 🎁</button>
 
-        <section class="sorpresa">
-            <button id="btn-sorpresa" onclick="sorpresa()">
-                🎁 Abrir mi regalo
-            </button>
+        <div id="mensajeFinal" style="display: none;">
+            <h2>Para Chris 💙</h2>
+            <p>Hoy celebro el regalo más hermoso que la vida me dio: tú.</p>
+            <p>Gracias por llenar mis días de felicidad, por cada sonrisa, por cada conversación, y por cada momento bonito que hemos compartido.</p>
+            <p>Desde aquel 1 de noviembre cuando comenzamos a hablar, mi vida ha tenido alguien muy especial.</p>
+            <p>Hoy quiero desearte un cumpleaños lleno de amor, alegría, salud y sueños cumplidos.</p>
+            <p>Nunca dejes de sonreír, porque tu sonrisa ilumina muchísimo.</p>
+            <p>Te quiero muchísimo, mi monita. 💙</p>
+            <p class="firma">Con cariño...<br>Jeferson</p>
             
-            <div id="mensajeFinal" style="display: none; margin-top: 30px;">
-                <h2>Para Chris 💙</h2>
-                <p>Hoy celebro el regalo más hermoso que la vida me dio: tú.</p>
-                <p>Gracias por llenar mis días de felicidad, por cada sonrisa, por cada conversación, y por cada momento bonito que hemos compartido.</p>
-                <p>Desde aquel <strong>1 de noviembre</strong> cuando comenzamos a hablar, mi vida ha tenido alguien muy especial.</p>
-                <p>Hoy quiero desearte un cumpleaños lleno de amor, alegría, salud y sueños cumplidos.</p>
-                <p>Nunca dejes de sonreír, porque tu sonrisa ilumina muchísimo.</p>
-                <p>Te quiero muchísimo, mi monita. 💙</p>
-                <p class="firma">Con cariño...<br><strong>Jeferson</strong></p>
-            </div>
-        </section>
+            <div class="galeria">
+                </div>
+        </div>
 
-        <div class="contador-box" style="margin-top: 40px;">
+        <div class="contador-box">
             <h3>⏳ Tiempo desde que empezamos a hablar</h3>
-            <p id="contador-texto" style="font-weight: bold; font-size: 1.2rem;">Calculando el tiempo...</p>
+            <p>Calculando el tiempo...</p>
+        </div>
+
+        <div class="music-controls">
+            <button onclick="toggleMusic()">🎵 Música</button>
         </div>
     </div>
 
-    <script>
-    // 1. Configuración de la fecha (Año, Mes-1, Día). Noviembre es el mes 10 en JavaScript
-    const fechaInicio = new Date(2023, 10, 1, 0, 0, 0);
-
-    function actualizarContador() {
-        const ahora = new Date();
-        const diferencia = ahora - fechaInicio;
-        const elementoContador = document.getElementById("contador-texto");
-
-        if (!elementoContador) return;
-
-        if (diferencia < 0) {
-            elementoContador.innerHTML = "¡Llegó el día especial! 💙";
-            return;
-        }
-
-        const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
-        const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
-        const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
-
-        elementoContador.innerHTML = `<strong>${dias}</strong> días, <strong>${horas}</strong> horas, <strong>${minutos}</strong> minutos y <strong>${segundos}</strong> segundos`;
-    }
-
-    // Ejecutar el contador en tiempo real
-    setInterval(actualizarContador, 1000);
-    actualizarContador();
-
-    // Función del botón
-    function sorpresa() {
-        const mensaje = document.getElementById("mensajeFinal");
-        const audio = document.getElementById("musica");
-        const boton = document.getElementById("btn-sorpresa");
-        
-        // Intentar reproducir música de fondo sin trabar la web
-        if (audio) {
-            audio.play().catch(e => console.log("El navegador bloqueó el audio inicial"));
-        }
-        
-        // Mostrar la carta con suavidad
-        if (mensaje) {
-            mensaje.style.display = "block";
-            if (boton) boton.style.display = "none"; // Oculta el botón tras abrirlo
-            mensaje.scrollIntoView({ behavior: 'smooth' });
-        }
-    }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
